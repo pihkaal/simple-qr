@@ -13,9 +13,14 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.5.7",
+    "canvas": "^2.11.2",
     "nuxt": "^3.13.0",
+    "qrcode": "^1.5.4",
     "vue": "latest",
     "vue-router": "latest"
   },
-  "packageManager": "pnpm@9.11.0"
+  "packageManager": "pnpm@9.11.0",
+  "devDependencies": {
+    "@types/qrcode": "^1.5.5"
+  }
 }
