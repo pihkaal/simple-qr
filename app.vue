@@ -19,6 +19,16 @@ const updateQRCode = async () => {
 
   qrCode.value = canvas.value.toDataURL(`image/${format.value}`);
 };
+
+const downloadQRCode = () => {
+  const link = document.createElement("a");
+  link.href = qrCode.value;
+  link.download = "qrcode.png";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 </script>
 
 <template>
@@ -35,5 +45,23 @@ const updateQRCode = async () => {
 
     <canvas ref="canvas" class="hidden" />
     <img :src="qrCode" />
+
+    <UButton
+      icon="i-heroicons-arrow-down-tray"
+      size="sm"
+      color="primary"
+      variant="solid"
+      label="Download"
+      :trailing="false"
+      @click="downloadQRCode"
+    />
+    <UButton
+      icon="i-heroicons-clipboard-document"
+      size="sm"
+      color="primary"
+      variant="solid"
+      label="Copy to clipboard"
+      :trailing="false"
+    />
   </div>
 </template>
