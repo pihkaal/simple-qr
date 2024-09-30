@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const LOGOS = ["session", "instagram"] as const;
 
-export const IMAGE_FORMATS = ["jpeg", "png", "webp"] as const;
+export const IMAGE_FORMATS = ["png", "jpeg", "webp"] as const;
 
 export type ImageFormat = (typeof IMAGE_FORMATS)[number];
 
