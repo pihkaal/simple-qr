@@ -1,16 +1,17 @@
 <script setup lang="ts">
-// TODO: remove error message
 // TODO: disable buttons when no qr code is generated (it is currenly possible to download default qr code)
 
 import { renderQRCodeToCanvas } from "@/utils/renderer";
-import { IMAGE_FORMATS, LOGOS, settingsSchema } from "@/utils/settings";
+import { IMAGE_FORMATS, LOGOS } from "@/utils/settings";
 
 const canvas = ref(null);
-const qrCode = ref("/default.webp");
+const form = ref(null);
+const qrCode = ref(undefined);
 
 const copyIcon = ref("i-heroicons-clipboard-document");
 const copyLabel = ref("Copy");
-const isQRCodeEmpty = computed(() => qrCode.value.length === 0);
+const isQRCodeEmpty = computed(() => !qrCode.value);
+const qrCodeSrc = computed(() => qrCode.value ?? "/default.webp");
 
 const state = reactive({
   logo: undefined,
@@ -18,10 +19,14 @@ const state = reactive({
   content: undefined,
 });
 
+const isValidState = computed(
+  () => state.content && state.logo && state.format,
+);
+
 const BASE_API_URL = "http://localhost:3000/api";
 
 const apiUrl = computed(() => {
-  if (!state.content) return "";
+  if (!isValidState.value) return "";
 
   const params = new URLSearchParams({
     logo: state.logo,
@@ -33,7 +38,9 @@ const apiUrl = computed(() => {
 });
 
 const updateQRCode = async () => {
-  if (!state.content) return;
+  await nextTick();
+
+  if (!isValidState.value) return;
 
   const logoUrl = `/${state.logo}.png`;
   await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
@@ -52,7 +59,7 @@ const downloadQRCode = () => {
 };
 
 const copyQRCode = async () => {
-  if (state.content.length === 0) return;
+  if (isQRCodeEmpty.value) return;
 
   const logoUrl = `/${state.logo}.png`;
   await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
@@ -84,10 +91,10 @@ const upperCase = (str: string) => str.toUpperCase();
     <div
       class="w-full h-full max-w-[850px] max-h-[375px] flex justify-between space-x-10"
     >
-      <img :src="qrCode" class="h-full aspect-square" />
+      <img :src="qrCodeSrc" class="h-full aspect-square" />
 
       <div class="flex-1 flex flex-col justify-center">
-        <UForm :schema="settingsSchema" :state="state" class="space-y-4">
+        <UForm ref="form" :state="state" class="space-y-4">
           <UFormGroup
             label="Username or link"
             name="content"
@@ -139,10 +146,13 @@ const upperCase = (str: string) => str.toUpperCase();
               <UInput
                 v-model="apiUrl"
                 disabled
-                placeholder="Generate QRCode first"
+                placeholder="Please fill all fields first"
                 class="w-full"
               />
-              <UButton icon="i-heroicons-clipboard-document" />
+              <UButton
+                :disabled="isQRCodeEmpty"
+                icon="i-heroicons-clipboard-document"
+              />
             </UButtonGroup>
           </UFormGroup>
 
