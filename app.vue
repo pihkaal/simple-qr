@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// TODO: default image or smth when no content
-
 import { renderQRCodeToCanvas } from "@/utils/renderer";
 import {
   IMAGE_FORMATS,
@@ -12,7 +10,7 @@ import {
 import type { FormSubmitEvent } from "#ui/types";
 
 const canvas = ref(null);
-const qrCode = ref("");
+const qrCode = ref("/default.webp");
 
 const copyIcon = ref("i-heroicons-clipboard-document");
 const copyLabel = ref("Copy");
@@ -48,7 +46,7 @@ const downloadQRCode = () => {
 const copyQRCode = async () => {
   if (state.content.length === 0) return;
 
-  const logoUrl = `/${state.format}.png`;
+  const logoUrl = `/${state.logo}.png`;
   await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
 
   const qrCode = canvas.value.toDataURL(`image/png`);
@@ -71,61 +69,28 @@ const copyQRCode = async () => {
     <NuxtRouteAnnouncer />
     <canvas ref="canvas" class="hidden" />
 
-    <div
-      class="w-full h-full max-w-[850px] max-h-[375px] flex justify-between gap-8"
-    >
+    <div class="w-full h-full max-w-[850px] max-h-[375px] flex justify-between gap-8">
       <img :src="qrCode" class="h-full aspect-square" />
 
       <div class="flex-1 flex flex-col justify-center">
         <UForm :schema="settingsSchema" :state="state" class="space-y-4">
-          <UFormGroup
-            label="Username or link"
-            name="content"
-            @input="updateQRCode"
-          >
+          <UFormGroup label="Username or link" name="content" @input="updateQRCode">
             <UInput v-model="state.content" />
           </UFormGroup>
 
           <UFormGroup label="Logo" name="logo">
-            <USelectMenu
-              v-model="state.logo"
-              :options="LOGOS"
-              searchable
-              @change="updateQRCode"
-            />
+            <USelectMenu v-model="state.logo" :options="LOGOS" searchable @change="updateQRCode" />
           </UFormGroup>
 
           <UFormGroup label="Format" name="format">
-            <USelectMenu
-              v-model="state.format"
-              :options="IMAGE_FORMATS"
-              @change="updateQRCode"
-            />
+            <USelectMenu v-model="state.format" :options="IMAGE_FORMATS" @change="updateQRCode" />
           </UFormGroup>
 
-          <UButton
-            block
-            :icon="copyIcon"
-            size="md"
-            color="primary"
-            variant="solid"
-            :label="copyLabel"
-            :trailing="false"
-            :disabled="isQRCodeEmpty"
-            @click="copyQRCode"
-          />
+          <UButton block :icon="copyIcon" size="md" color="primary" variant="solid" :label="copyLabel" :trailing="false"
+            :disabled="isQRCodeEmpty" @click="copyQRCode" />
 
-          <UButton
-            block
-            icon="i-heroicons-arrow-down-tray"
-            size="md"
-            color="primary"
-            variant="solid"
-            label="Download"
-            :trailing="false"
-            :disabled="isQRCodeEmpty"
-            @click="downloadQRCode"
-          />
+          <UButton block icon="i-heroicons-arrow-down-tray" size="md" color="primary" variant="solid" label="Download"
+            :trailing="false" :disabled="isQRCodeEmpty" @click="downloadQRCode" />
         </UForm>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LOGOS = ["session", "instagram"] as const;
+export const LOGOS = ["session", "github"] as const;
 
 export const IMAGE_FORMATS = ["png", "jpeg", "webp"] as const;
 
