@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// TODO: disable buttons when no qr code is generated (it is currenly possible to download default qr code)
-
 import { renderQRCodeToCanvas } from "@/utils/renderer";
 import { IMAGE_FORMATS, LOGOS } from "@/utils/settings";
 
@@ -8,8 +6,10 @@ const canvas = ref(null);
 const form = ref(null);
 const qrCode = ref(undefined);
 
-const copyIcon = ref("i-heroicons-clipboard-document");
-const copyLabel = ref("Copy");
+const copyUrlIcon = ref("i-heroicons-clipboard-document");
+const copyImageIcon = ref("i-heroicons-clipboard-document");
+const copyImageLabel = ref("Copy");
+
 const isQRCodeEmpty = computed(() => !qrCode.value);
 const qrCodeSrc = computed(() => qrCode.value ?? "/default.webp");
 
@@ -48,6 +48,17 @@ const updateQRCode = async () => {
   qrCode.value = canvas.value.toDataURL(`image/${state.format}`);
 };
 
+const copyUrl = async () => {
+  if (!isValidState.value) return;
+
+  await navigator.clipboard.writeText(apiUrl.value);
+
+  copyUrlIcon.value = "i-heroicons-clipboard-document-check";
+  setTimeout(() => {
+    copyUrlIcon.value = "i-heroicons-clipboard-document";
+  }, 3000);
+};
+
 const downloadQRCode = () => {
   const link = document.createElement("a");
   link.href = qrCode.value;
@@ -70,11 +81,11 @@ const copyQRCode = async () => {
   const item = new ClipboardItem({ "image/png": blob });
   await navigator.clipboard.write([item]);
 
-  copyIcon.value = "i-heroicons-clipboard-document-check";
-  copyLabel.value = "Copied!";
+  copyImageIcon.value = "i-heroicons-clipboard-document-check";
+  copyImageLabel.value = "Copied!";
   setTimeout(() => {
-    copyIcon.value = "i-heroicons-clipboard-document";
-    copyLabel.value = "Copy";
+    copyImageIcon.value = "i-heroicons-clipboard-document";
+    copyImageLabel.value = "Copy";
   }, 3000);
 };
 
@@ -151,7 +162,8 @@ const upperCase = (str: string) => str.toUpperCase();
               />
               <UButton
                 :disabled="isQRCodeEmpty"
-                icon="i-heroicons-clipboard-document"
+                :icon="copyUrlIcon"
+                @click="copyUrl"
               />
             </UButtonGroup>
           </UFormGroup>
@@ -160,11 +172,11 @@ const upperCase = (str: string) => str.toUpperCase();
             <UButton
               class="flex-1"
               block
-              :icon="copyIcon"
+              :icon="copyImageIcon"
               size="md"
               color="primary"
               variant="solid"
-              :label="copyLabel"
+              :label="copyImageLabel"
               :trailing="false"
               :disabled="isQRCodeEmpty"
               @click="copyQRCode"
