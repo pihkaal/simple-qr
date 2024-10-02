@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { renderQRCodeToCanvas } from "@/utils/renderer";
-import {
-  IMAGE_FORMATS,
-  LOGOS,
-  settingsSchema,
-  type Settings,
-} from "@/utils/settings";
+// TODO: remove error message
+// TODO: disable buttons when no qr code is generated (it is currenly possible to download default qr code)
 
-import type { FormSubmitEvent } from "#ui/types";
+import { renderQRCodeToCanvas } from "@/utils/renderer";
+import { IMAGE_FORMATS, LOGOS, settingsSchema } from "@/utils/settings";
 
 const canvas = ref(null);
 const qrCode = ref("/default.webp");
@@ -17,9 +13,23 @@ const copyLabel = ref("Copy");
 const isQRCodeEmpty = computed(() => qrCode.value.length === 0);
 
 const state = reactive({
-  logo: LOGOS[0],
+  logo: undefined,
   format: IMAGE_FORMATS[0],
   content: undefined,
+});
+
+const BASE_API_URL = "http://localhost:3000/api";
+
+const apiUrl = computed(() => {
+  if (!state.content) return "";
+
+  const params = new URLSearchParams({
+    logo: state.logo,
+    format: state.format,
+    content: state.content,
+  });
+
+  return `${BASE_API_URL}?${params}`;
 });
 
 const updateQRCode = async () => {
@@ -60,6 +70,10 @@ const copyQRCode = async () => {
     copyLabel.value = "Copy";
   }, 3000);
 };
+
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+const upperCase = (str: string) => str.toUpperCase();
 </script>
 
 <template>
@@ -68,7 +82,7 @@ const copyQRCode = async () => {
     <canvas ref="canvas" class="hidden" />
 
     <div
-      class="w-full h-full max-w-[850px] max-h-[375px] flex justify-between gap-8"
+      class="w-full h-full max-w-[850px] max-h-[375px] flex justify-between space-x-10"
     >
       <img :src="qrCode" class="h-full aspect-square" />
 
@@ -79,49 +93,86 @@ const copyQRCode = async () => {
             name="content"
             @input="updateQRCode"
           >
-            <UInput v-model="state.content" />
+            <UInput
+              v-model="state.content"
+              placeholder="Your username or profile link"
+            />
           </UFormGroup>
 
           <UFormGroup label="Logo" name="logo">
             <USelectMenu
               v-model="state.logo"
               :options="LOGOS"
+              placeholder="Select logo"
               searchable
               @change="updateQRCode"
-            />
+            >
+              <template #label>
+                <span v-if="state.logo">{{ capitalize(state.logo) }}</span>
+              </template>
+
+              <template #option="props">
+                <span>{{ capitalize(props.option) }}</span>
+              </template>
+            </USelectMenu>
           </UFormGroup>
 
           <UFormGroup label="Format" name="format">
             <USelectMenu
               v-model="state.format"
               :options="IMAGE_FORMATS"
+              placeholder="Select format"
               @change="updateQRCode"
-            />
+            >
+              <template #label>
+                <span v-if="state.format">{{ upperCase(state.format) }}</span>
+              </template>
+
+              <template #option="props">
+                <span>{{ upperCase(props.option) }}</span>
+              </template>
+            </USelectMenu>
           </UFormGroup>
 
-          <UButton
-            block
-            :icon="copyIcon"
-            size="md"
-            color="primary"
-            variant="solid"
-            :label="copyLabel"
-            :trailing="false"
-            :disabled="isQRCodeEmpty"
-            @click="copyQRCode"
-          />
+          <UFormGroup label="API">
+            <UButtonGroup size="sm" orientation="horizontal" class="w-full">
+              <UInput
+                v-model="apiUrl"
+                disabled
+                placeholder="Generate QRCode first"
+                class="w-full"
+              />
+              <UButton icon="i-heroicons-clipboard-document" />
+            </UButtonGroup>
+          </UFormGroup>
 
-          <UButton
-            block
-            icon="i-heroicons-arrow-down-tray"
-            size="md"
-            color="primary"
-            variant="solid"
-            label="Download"
-            :trailing="false"
-            :disabled="isQRCodeEmpty"
-            @click="downloadQRCode"
-          />
+          <div class="flex space-x-4 pt-2">
+            <UButton
+              class="flex-1"
+              block
+              :icon="copyIcon"
+              size="md"
+              color="primary"
+              variant="solid"
+              :label="copyLabel"
+              :trailing="false"
+              :disabled="isQRCodeEmpty"
+              @click="copyQRCode"
+            />
+
+            <UButton
+              class="flex-1"
+              block
+              icon="i-heroicons-arrow-down-tray"
+              size="md"
+              color="primary"
+              variant="solid"
+              label="Download"
+              :trailing="false"
+              :disabled="isQRCodeEmpty"
+              @click="downloadQRCode"
+            />
+          </div>
         </UForm>
       </div>
     </div>
