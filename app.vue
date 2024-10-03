@@ -99,8 +99,12 @@ const upperCase = (str: string) => str.toUpperCase();
     <NuxtRouteAnnouncer />
     <canvas ref="canvas" class="hidden" />
 
-    <div class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-3">
-      <h1 class="text-4xl font-bold text-gray-700 dark:text-gray-200 border-b border-gray-700">
+    <div
+      class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-4"
+    >
+      <h1
+        class="text-4xl font-bold text-gray-700 dark:text-gray-200 border-b border-gray-700"
+      >
         Simple QRCode Generator
       </h1>
       <div class="flex justify-between space-x-8">
@@ -108,13 +112,27 @@ const upperCase = (str: string) => str.toUpperCase();
 
         <div class="flex-1 flex flex-col justify-center">
           <UForm ref="form" :state="state" class="space-y-4">
-            <UFormGroup label="Username or link" name="content" @input="updateQRCode">
-              <UInput v-model="state.content" placeholder="Your username or profile link" />
+            <UFormGroup
+              label="Username or link"
+              name="content"
+              @input="updateQRCode"
+            >
+              <UInput
+                icon="i-heroicons-user"
+                v-model="state.content"
+                placeholder="Your username or profile link"
+              />
             </UFormGroup>
 
             <UFormGroup label="Logo" name="logo">
-              <USelectMenu v-model="state.logo" :options="LOGOS" placeholder="Select logo" searchable
-                @change="updateQRCode">
+              <USelectMenu
+                icon="i-heroicons-photo"
+                v-model="state.logo"
+                :options="LOGOS"
+                placeholder="Select logo"
+                searchable
+                @change="updateQRCode"
+              >
                 <template #label>
                   <span v-if="state.logo">{{ capitalize(state.logo) }}</span>
                 </template>
@@ -126,8 +144,13 @@ const upperCase = (str: string) => str.toUpperCase();
             </UFormGroup>
 
             <UFormGroup label="Format" name="format">
-              <USelectMenu v-model="state.format" :options="IMAGE_FORMATS" placeholder="Select format"
-                @change="updateQRCode">
+              <USelectMenu
+                icon="i-heroicons-document-duplicate"
+                v-model="state.format"
+                :options="IMAGE_FORMATS"
+                placeholder="Select format"
+                @change="updateQRCode"
+              >
                 <template #label>
                   <span v-if="state.format">{{ upperCase(state.format) }}</span>
                 </template>
@@ -140,17 +163,46 @@ const upperCase = (str: string) => str.toUpperCase();
 
             <UFormGroup label="API">
               <UButtonGroup size="sm" orientation="horizontal" class="w-full">
-                <UInput v-model="apiUrl" disabled placeholder="Please fill all fields first" class="w-full" />
-                <UButton :disabled="isQRCodeEmpty" :icon="copyUrlIcon" @click="copyUrl" />
+                <UInput
+                  v-model="apiUrl"
+                  disabled
+                  placeholder="Please fill all fields first"
+                  class="w-full"
+                />
+                <UButton
+                  :disabled="isQRCodeEmpty"
+                  :icon="copyUrlIcon"
+                  @click="copyUrl"
+                />
               </UButtonGroup>
             </UFormGroup>
 
             <div class="flex space-x-4 pt-2">
-              <UButton class="flex-1" block :icon="copyImageIcon" size="md" color="primary" variant="solid"
-                :label="copyImageLabel" :trailing="false" :disabled="isQRCodeEmpty" @click="copyQRCode" />
+              <UButton
+                class="flex-1"
+                block
+                :icon="copyImageIcon"
+                size="md"
+                color="primary"
+                variant="solid"
+                :label="copyImageLabel"
+                :trailing="false"
+                :disabled="isQRCodeEmpty"
+                @click="copyQRCode"
+              />
 
-              <UButton class="flex-1" block icon="i-heroicons-arrow-down-tray" size="md" color="primary" variant="solid"
-                label="Download" :trailing="false" :disabled="isQRCodeEmpty" @click="downloadQRCode" />
+              <UButton
+                class="flex-1"
+                block
+                icon="i-heroicons-arrow-down-tray"
+                size="md"
+                color="primary"
+                variant="solid"
+                label="Download"
+                :trailing="false"
+                :disabled="isQRCodeEmpty"
+                @click="downloadQRCode"
+              />
             </div>
           </UForm>
         </div>
