@@ -1,6 +1,52 @@
 import { z } from "zod";
 
-export const LOGOS = ["session", "github"] as const;
+// TODO: might be better to load these dynamically lol
+export const LOGOS = [
+  "bereal",
+  "bitcoinsv",
+  "buymeacoffee",
+  "diaspora",
+  "discord",
+  "dropbox",
+  "ello",
+  "facebook",
+  "flickr",
+  "github",
+  "googlemaps",
+  "googlemeet",
+  "googlemessages",
+  "imessage",
+  "instagram",
+  "kik",
+  "line",
+  "linkedin",
+  "litecoin",
+  "mastodon",
+  "medium",
+  "messenger",
+  "monero",
+  "onlyfans",
+  "patreon",
+  "paypal",
+  "peertube",
+  "pinterest",
+  "reddit",
+  "session",
+  "signal",
+  "snapchat",
+  "spotify",
+  "substack",
+  "telegram",
+  "threema",
+  "twitch",
+  "venmo",
+  "viber",
+  "wechat",
+  "whatsapp",
+  "x",
+  "youtube",
+  "zoom",
+] as const;
 
 export const IMAGE_FORMATS = ["png", "jpeg", "webp"] as const;
 

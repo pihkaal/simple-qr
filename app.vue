@@ -44,7 +44,7 @@ const updateQRCode = async () => {
 
   if (!isValidState.value) return;
 
-  const logoUrl = `/${state.logo}.png`;
+  const logoUrl = `/logos/${state.logo}.png`;
   await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
 
   qrCode.value = canvas.value.toDataURL(`image/${state.format}`);
@@ -74,7 +74,7 @@ const downloadQRCode = () => {
 const copyQRCode = async () => {
   if (isQRCodeEmpty.value) return;
 
-  const logoUrl = `/${state.logo}.png`;
+  const logoUrl = `/logos/${state.logo}.png`;
   await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
 
   const qrCode = canvas.value.toDataURL(`image/png`);

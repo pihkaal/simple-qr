@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
   const { format, logo, content } = parsed.data;
 
   const canvas = createCanvas(CANVAS_SIZE, CANVAS_SIZE);
-  const logoUrl = resolve("public", `${logo}.png`);
+  const logoUrl = resolve("public", `logos/${logo}.png`);
   await renderQRCodeToCanvas(canvas, content, logoUrl);
 
   let image = canvas.toBuffer();
