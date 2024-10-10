@@ -107,9 +107,7 @@ const arrayToUnion = (array: string[]) =>
     <div
       class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-4"
     >
-      <h1
-        class="text-4xl font-bold text-gray-700 dark:text-gray-200 border-b border-gray-700"
-      >
+      <h1 class="text-4xl font-bold text-white border-b border-gray-700">
         Simple QRCode Generator
       </h1>
       <div class="flex justify-between space-x-8">
