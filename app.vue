@@ -16,6 +16,7 @@ const qrCodeSrc = computed(() => qrCode.value ?? "/default.webp");
 const isApiModelOpen = ref(false);
 
 const state = reactive({
+  hasLogo: false,
   logo: undefined,
   format: IMAGE_FORMATS[0],
   content: undefined,
@@ -127,13 +128,23 @@ const arrayToUnion = (array: string[]) =>
               />
             </UFormGroup>
 
-            <UFormGroup label="Logo" name="logo">
+            <UFormGroup name="logo">
+              <template #label>
+                <UCheckbox
+                  v-model="state.hasLogo"
+                  class="mb-1.5"
+                  label="Logo"
+                />
+              </template>
+
               <USelectMenu
                 v-model="state.logo"
                 icon="i-heroicons-photo"
                 :options="LOGOS"
+                :disabled="!state.hasLogo"
                 placeholder="Select logo"
                 searchable
+                clear-search-on-close
                 @change="updateQRCode"
               >
                 <template #label>
