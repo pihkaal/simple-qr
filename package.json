@@ -1,5 +1,7 @@
 {
   "name": "social-qr",
+  "description": "Simple, bullshit-free QR code generator",
+  "author": "Pihkaal <hello@pihkaal.me> (https://pihkaal.me)",
   "private": true,
   "type": "module",
   "scripts": {
