@@ -117,6 +117,16 @@ const upperCase = (str: string) => str.toUpperCase();
 
 const arrayToUnion = (array: string[]) =>
   array.map((x) => `"${x}"`).join(" | ");
+
+const colorMode = useColorMode();
+const isDark = computed({
+  get() {
+    return colorMode.value === "dark";
+  },
+  set() {
+    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+  },
+});
 </script>
 
 <template>
@@ -126,11 +136,31 @@ const arrayToUnion = (array: string[]) =>
     <div
       class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-4"
     >
-      <h1
-        class="text-4xl font-bold pb-1.5 border-b border-gray-100 dark:border-gray-800"
+      <div
+        class="pb-1.5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center"
       >
-        Simple QRCode Generator
-      </h1>
+        <h1 class="text-4xl font-bold">Simple QRCode Generator</h1>
+
+        <div class="flex gap-x-1">
+          <ClientOnly>
+            <UButton
+              :icon="
+                isDark
+                  ? 'i-heroicons-moon-20-solid'
+                  : 'i-heroicons-sun-20-solid'
+              "
+              color="gray"
+              variant="ghost"
+              aria-label="Theme"
+              class="w-8 h-8"
+              @click="isDark = !isDark"
+            />
+            <template #fallback>
+              <div class="w-8 h-8" />
+            </template>
+          </ClientOnly>
+        </div>
+      </div>
       <div class="flex justify-between space-x-8">
         <img
           :src="qrCodeSrc"
