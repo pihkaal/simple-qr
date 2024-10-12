@@ -21,6 +21,13 @@ const state = reactive({
   content: undefined,
 });
 
+const firstBlured = ref(false);
+
+const stateErrors = computed(() => ({
+  content: firstBlured.value && !state.content,
+  logo: firstBlured.value && state.hasLogo && !state.logo,
+}));
+
 const isValidState = computed(
   () =>
     state.content &&
@@ -77,10 +84,10 @@ const downloadQRCode = () => {
 const copyQRCode = async () => {
   if (isQRCodeEmpty.value) return;
 
-  const logoUrl = `/logos/${state.logo}.png`;
-  await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
+  const logoUrl = state.hasLogo ? `/logos/${state.logo}.png` : undefined;
+  const canvas = await renderQRCodeToCanvas(state.content, logoUrl);
 
-  const qrCode = canvas.value.toDataURL(`image/png`);
+  const qrCode = canvas.toDataURL(`image/png`);
 
   const blob = await (await fetch(qrCode)).blob();
   const item = new ClipboardItem({ "image/png": blob });
@@ -120,22 +127,25 @@ const arrayToUnion = (array: string[]) =>
             <UFormGroup
               label="Username or link"
               name="content"
-              @input="updateQRCode"
+              :error="stateErrors.content"
             >
               <UInput
                 v-model="state.content"
                 icon="i-heroicons-user"
                 placeholder="Your username or profile link"
+                @input="updateQRCode"
+                @blur="firstBlured = true"
               />
             </UFormGroup>
 
-            <UFormGroup name="logo">
+            <UFormGroup name="logo" :error="stateErrors.logo">
               <template #label>
                 <UCheckbox
                   v-model="state.hasLogo"
                   class="mb-1.5"
                   label="Logo"
                   @change="updateQRCode"
+                  @blur="firstBlured = true"
                 />
               </template>
 
@@ -148,6 +158,7 @@ const arrayToUnion = (array: string[]) =>
                 searchable
                 clear-search-on-close
                 @change="updateQRCode"
+                @blur="firstBlured = true"
               >
                 <template #label>
                   <span v-if="state.logo">{{ capitalize(state.logo) }}</span>
@@ -166,6 +177,7 @@ const arrayToUnion = (array: string[]) =>
                 :options="IMAGE_FORMATS"
                 placeholder="Select format"
                 @change="updateQRCode"
+                @blur="firstBlured = true"
               >
                 <template #label>
                   <span v-if="state.format">{{ upperCase(state.format) }}</span>
@@ -197,7 +209,7 @@ const arrayToUnion = (array: string[]) =>
                 />
                 <UButton
                   color="gray"
-                  :disabled="isQRCodeEmpty"
+                  :disabled="!isValidState"
                   :icon="copyUrlIcon"
                   @click="copyUrl"
                 />
