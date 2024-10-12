@@ -3,7 +3,7 @@ import { z } from "zod";
 // TODO: might be better to load these dynamically lol
 export const LOGOS = [
   "bereal",
-  "bitcoinsv",
+  "bitcoin",
   "buymeacoffee",
   "diaspora",
   "discord",
