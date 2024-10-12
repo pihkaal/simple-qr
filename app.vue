@@ -6,6 +6,7 @@ const form = ref(null);
 const qrCode = ref(undefined);
 
 const copyUrlIcon = ref("i-heroicons-clipboard-document");
+const copyBaseApiUrlIcon = ref("i-heroicons-clipboard-document");
 const copyImageIcon = ref("i-heroicons-clipboard-document");
 const copyImageLabel = ref("Copy");
 
@@ -35,7 +36,7 @@ const isValidState = computed(
     state.format,
 );
 
-const BASE_API_URL = "http://localhost:3000/api";
+const BASE_API_URL = "https://simple-qr.com/api";
 
 const apiUrl = computed(() => {
   if (!isValidState.value) return "";
@@ -68,6 +69,15 @@ const copyUrl = async () => {
   copyUrlIcon.value = "i-heroicons-clipboard-document-check";
   setTimeout(() => {
     copyUrlIcon.value = "i-heroicons-clipboard-document";
+  }, 3000);
+};
+
+const copyBaseApiUrl = async () => {
+  await navigator.clipboard.writeText(BASE_API_URL);
+
+  copyBaseApiUrlIcon.value = "i-heroicons-clipboard-document-check";
+  setTimeout(() => {
+    copyBaseApiUrlIcon.value = "i-heroicons-clipboard-document";
   }, 3000);
 };
 
@@ -120,7 +130,7 @@ const arrayToUnion = (array: string[]) =>
         Simple QRCode Generator
       </h1>
       <div class="flex justify-between space-x-8">
-        <img :src="qrCodeSrc" class="max-h-[375px] aspect-square" />
+        <img :src="qrCodeSrc" class="max-h-[375px] aspect-square" >
 
         <div class="flex-1 flex flex-col justify-center">
           <UForm ref="form" :state="state" class="space-y-4">
@@ -276,28 +286,36 @@ const arrayToUnion = (array: string[]) =>
           <p>
             You can easily generate QRCodes by using the API, with no rate
             limitation.
-            <br />
-            <br />
+            <br >
+            <br >
             If you are not sure how to use the API, you can fill the QRCode form
             and copy the generated API URL.
           </p>
 
           <div class="space-y-3">
             <h2 class="font-bold text-lg">Base API URL</h2>
-            <UInput
-              model-value="https://simple-qr.com/api"
-              size="sm"
-              class="w-full"
-              disabled
-              :ui="{ base: '!ps-12 !cursor-text font-mono' }"
-            >
-              <template #leading>
-                <span
-                  class="text-white dark:text-gray-900 bg-primary py-0.5 -mx-1 px-2 text-xs rounded-sm"
-                  >GET</span
-                >
-              </template>
-            </UInput>
+
+            <UButtonGroup size="sm" orientation="horizontal" class="w-full">
+              <UInput
+                :model-value="BASE_API_URL"
+                size="sm"
+                class="w-full"
+                disabled
+                :ui="{ base: '!ps-12 !cursor-text font-mono' }"
+              >
+                <template #leading>
+                  <span
+                    class="text-white dark:text-gray-900 bg-primary py-0.5 -mx-1 px-2 text-xs rounded-sm"
+                    >GET</span
+                  >
+                </template>
+              </UInput>
+              <UButton
+                color="gray"
+                :icon="copyBaseApiUrlIcon"
+                @click="copyBaseApiUrl"
+              />
+            </UButtonGroup>
           </div>
 
           <div class="space-y-3">
