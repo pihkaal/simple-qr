@@ -1,0 +1,16 @@
+services:
+  simple-qr:
+    build: .
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.simple-qr.rule=Host(`simple-qr.com`)"
+      - "traefik.http.routers.simple-qr.service=simple-qr"
+      - "traefik.http.services.simple-qr.loadbalancer.server.port=3000"
+      - "traefik.http.routers.simple-qr.tls=true"
+      - "traefik.http.routers.simple-qr.tls.certResolver=myresolver"
+
+networks:
+  web:
+    external: true
