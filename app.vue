@@ -23,7 +23,10 @@ const state = reactive({
 });
 
 const isValidState = computed(
-  () => state.content && state.logo && state.format,
+  () =>
+    state.content &&
+    ((state.hasLogo && state.logo) || !state.hasLogo) &&
+    state.format,
 );
 
 const BASE_API_URL = "http://localhost:3000/api";
@@ -32,7 +35,7 @@ const apiUrl = computed(() => {
   if (!isValidState.value) return "";
 
   const params = new URLSearchParams({
-    logo: state.logo,
+    ...(state.hasLogo && { logo: state.logo }),
     format: state.format,
     content: state.content,
   });
@@ -45,7 +48,7 @@ const updateQRCode = async () => {
 
   if (!isValidState.value) return;
 
-  const logoUrl = `/logos/${state.logo}.png`;
+  const logoUrl = state.hasLogo ? `/logos/${state.logo}.png` : undefined;
   await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
 
   qrCode.value = canvas.value.toDataURL(`image/${state.format}`);
@@ -134,6 +137,7 @@ const arrayToUnion = (array: string[]) =>
                   v-model="state.hasLogo"
                   class="mb-1.5"
                   label="Logo"
+                  @change="updateQRCode"
                 />
               </template>
 

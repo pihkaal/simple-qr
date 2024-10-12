@@ -54,7 +54,7 @@ export type ImageFormat = (typeof IMAGE_FORMATS)[number];
 
 export const settingsSchema = z.object({
   format: z.enum(IMAGE_FORMATS).default("png"),
-  logo: z.enum(LOGOS),
+  logo: z.enum(LOGOS).optional(),
   content: z.string().min(1, "Required"),
 });
 
