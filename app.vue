@@ -126,11 +126,16 @@ const arrayToUnion = (array: string[]) =>
     <div
       class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-4"
     >
-      <h1 class="text-4xl font-bold text-white border-b border-gray-700">
+      <h1
+        class="text-4xl font-bold pb-1.5 border-b border-gray-100 dark:border-gray-800"
+      >
         Simple QRCode Generator
       </h1>
       <div class="flex justify-between space-x-8">
-        <img :src="qrCodeSrc" class="max-h-[375px] aspect-square" >
+        <img
+          :src="qrCodeSrc"
+          class="max-h-[375px] aspect-square border border-gray-100 dark:border-gray-800"
+        />
 
         <div class="flex-1 flex flex-col justify-center">
           <UForm ref="form" :state="state" class="space-y-4">
@@ -286,8 +291,8 @@ const arrayToUnion = (array: string[]) =>
           <p>
             You can easily generate QRCodes by using the API, with no rate
             limitation.
-            <br >
-            <br >
+            <br />
+            <br />
             If you are not sure how to use the API, you can fill the QRCode form
             and copy the generated API URL.
           </p>
