@@ -175,7 +175,7 @@ const isDark = computed({
         <img
           :src="qrCodeSrc"
           class="max-h-[375px] aspect-square border border-gray-100 dark:border-gray-800"
-        >
+        />
 
         <div class="flex-1 flex flex-col justify-center">
           <UForm ref="form" :state="state" class="space-y-4">
@@ -331,8 +331,8 @@ const isDark = computed({
           <p>
             You can easily generate QRCodes by using the API, with no rate
             limitation.
-            <br >
-            <br >
+            <br />
+            <br />
             If you are not sure how to use the API, you can fill the QRCode form
             and copy the generated API URL.
           </p>
