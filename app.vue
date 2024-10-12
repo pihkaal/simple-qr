@@ -1,4 +1,9 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: "Simple QRCode Generator",
+  description: "Simple, bullshit-free QR code generator.",
+});
+
 import { renderQRCodeToCanvas } from "@/utils/renderer";
 import { IMAGE_FORMATS, LOGOS } from "@/utils/settings";
 
