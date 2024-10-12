@@ -1,7 +1,6 @@
-import { createCanvas } from "canvas";
 import { resolve } from "path";
 import sharp from "sharp";
-import { CANVAS_SIZE, renderQRCodeToCanvas } from "~/utils/renderer";
+import { renderQRCodeToCanvas } from "~/utils/renderer";
 import { settingsSchema } from "~/utils/settings";
 
 export default defineEventHandler(async (event) => {
@@ -21,9 +20,8 @@ export default defineEventHandler(async (event) => {
 
   const { format, logo, content } = parsed.data;
 
-  const canvas = createCanvas(CANVAS_SIZE, CANVAS_SIZE);
   const logoUrl = logo ? resolve("public", `logos/${logo}.png`) : undefined;
-  await renderQRCodeToCanvas(canvas, content, logoUrl);
+  const canvas = await renderQRCodeToCanvas(content, logoUrl);
 
   let image = canvas.toBuffer();
   if (format !== "png") {

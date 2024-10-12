@@ -2,7 +2,6 @@
 import { renderQRCodeToCanvas } from "@/utils/renderer";
 import { IMAGE_FORMATS, LOGOS } from "@/utils/settings";
 
-const canvas = ref(null);
 const form = ref(null);
 const qrCode = ref(undefined);
 
@@ -49,9 +48,9 @@ const updateQRCode = async () => {
   if (!isValidState.value) return;
 
   const logoUrl = state.hasLogo ? `/logos/${state.logo}.png` : undefined;
-  await renderQRCodeToCanvas(canvas.value, state.content, logoUrl);
+  const canvas = await renderQRCodeToCanvas(state.content, logoUrl);
 
-  qrCode.value = canvas.value.toDataURL(`image/${state.format}`);
+  qrCode.value = canvas.toDataURL(`image/${state.format}`);
 };
 
 const copyUrl = async () => {
@@ -106,7 +105,6 @@ const arrayToUnion = (array: string[]) =>
 <template>
   <div role="main" class="flex h-[100vh] items-center justify-center">
     <NuxtRouteAnnouncer />
-    <canvas ref="canvas" class="hidden" />
 
     <div
       class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-4"
