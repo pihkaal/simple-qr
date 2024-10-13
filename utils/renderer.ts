@@ -9,16 +9,19 @@ export const renderQRCodeToCanvas = async (
   logoUrl: string | undefined,
 ) => {
   const canvas = createCanvas(CANVAS_SIZE, CANVAS_SIZE);
+  const errorCorrectionLevel: QRCode.QRCodeErrorCorrectionLevel = logoUrl
+    ? "H"
+    : "M";
 
   await QRCode.toCanvas(canvas, content, {
-    errorCorrectionLevel: "H",
+    errorCorrectionLevel,
     width: CANVAS_SIZE,
     margin: 1,
   });
 
   if (!logoUrl) return canvas;
 
-  const qrCode = QRCode.create(content, { errorCorrectionLevel: "H" });
+  const qrCode = QRCode.create(content, { errorCorrectionLevel });
   const moduleCount = qrCode.modules.size + 2;
 
   const logoImage = await loadImage(logoUrl);
