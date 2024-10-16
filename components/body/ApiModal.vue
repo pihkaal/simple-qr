@@ -49,7 +49,7 @@ const { copy: copyBaseApiUrl, icon: baseApiUrlIcon } = useCopyable(baseApiUrl);
 
           <UButtonGroup size="sm" orientation="horizontal" class="w-full">
             <UInput
-              model-value="https://simple-qr.com/api"
+              :model-value="baseApiUrl"
               size="sm"
               class="w-full"
               disabled
