@@ -2,7 +2,7 @@
   <div
     class="pb-1.5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center"
   >
-    <h1 class="text-4xl font-bold">Simple QRCode Generator</h1>
+    <h1 class="text-2xl sm:text-4xl font-bold">Simple QRCode</h1>
 
     <ClientOnly>
       <div class="flex gap-x-1 animate-fadeIn">

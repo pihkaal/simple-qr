@@ -20,11 +20,11 @@ useSeoMeta({
 </script>
 
 <template>
-  <div role="main" class="flex h-[100vh] items-center justify-center">
+  <div role="main" class="flex min-h-[100vh] items-center justify-center">
     <NuxtRouteAnnouncer />
 
     <div
-      class="p-5 w-full max-w-[850px] flex flex-col justify-center space-y-4"
+      class="p-5 w-full max-w-[430px] sm:max-w-[850px] flex flex-col justify-center space-y-4"
     >
       <AppHeader />
       <AppBody />

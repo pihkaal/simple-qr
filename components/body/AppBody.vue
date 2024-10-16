@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between space-x-8">
+  <div class="flex flex-col sm:flex-row justify-between gap-4">
     <QRCodePreview />
 
     <QRCodeForm />
