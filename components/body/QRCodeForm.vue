@@ -36,6 +36,7 @@ const apiUrl = computed((previous) => {
 
   return `${baseApiUrl}?${params}`;
 });
+const isValidApiUrl = computed(() => !!apiUrl.value);
 
 const { icon: copyUrlIcon, copy: copyUrl } = useCopyable(apiUrl);
 
@@ -170,7 +171,7 @@ const {
           />
           <UButton
             color="gray"
-            :disabled="!isValidState"
+            :disabled="!isValidApiUrl"
             :icon="copyUrlIcon"
             @click="copyUrl"
           />
