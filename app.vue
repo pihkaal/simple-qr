@@ -1,7 +1,21 @@
 <script setup lang="ts">
+const TITLE = "Simple QRCode Generator";
+const DESCRIPTION =
+  "Simple, bullshit-free QR code generator with straightforward API.";
+const IMAGE = "/thumbnail.png";
+
 useSeoMeta({
-  title: "Simple QRCode Generator",
-  description: "Simple, bullshit-free QR code generator.",
+  title: TITLE,
+  description: DESCRIPTION,
+  ogType: "website",
+  ogTitle: TITLE,
+  ogDescription: DESCRIPTION,
+  ogImage: IMAGE,
+  themeColor: "#4ade80",
+  twitterCard: "summary",
+  twitterTitle: TITLE,
+  twitterDescription: DESCRIPTION,
+  twitterImage: IMAGE,
 });
 </script>
 
