@@ -1,6 +1,6 @@
 services:
   simple-qr:
-    build: .
+    image: pihkaal/simple-qr:latest
     networks:
       - web
     labels:
